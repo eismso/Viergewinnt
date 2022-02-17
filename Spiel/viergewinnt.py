@@ -1,4 +1,5 @@
 from typing import List
+import random
 
 leerer_eintrag = "   "
 
@@ -31,7 +32,7 @@ class Spielbrett:
         for r in range(len(self.feld)):
             print(f'|{self.feld[r][0]}|{self.feld[r][1]}|{self.feld[r][2]}|{self.feld[r][3]}|{self.feld[r][4]}|{self.feld[r][5]}|{self.feld[r][6]}|')
         print('-----------------------------')
-        print('| 1 | 2 | 3 | 4 | 5 | 6 | 7 |')
+        print('| 1 | 2 | 3 | 4 | 5 | 6 | 7 | \n')
 
 class Spieler:
 
@@ -64,74 +65,124 @@ class Spieler:
 
 class Spiel:
 
+    gewinn = False
+    gewinner = ''
+
     def __init__(self, spielbrett: Spielbrett):
-        spielbrett = spielbrett
+        self.spielbrett = spielbrett
 
     def starten(self):
-        computer = input(f'Möchtest du gegen den Computer spielen? Y/N:')
-        # if computer ja etc.
-        #TODO: Namen
-        pass
+        name = input(f'Hallo! Wie lautet dein Name? : ')
+        spieler1 = Spieler(name, "X")
+        print(f'Hallo {spieler1.name}! Dein Spielstein ist {spieler1.spielstein}')
+
+        beantwortet = False
+        computer_gegner = False
+        while not beantwortet:
+            computer_abfrage = input(f'Möchtest du gegen den Computer spielen? Y/N:')
+            if computer_abfrage == "Y" or computer_abfrage == "y":
+                beantwortet = True
+                computer_gegner = True
+                computer = Spieler("PC", "O")
+            elif computer_abfrage == "N" or computer_abfrage =="n":
+                name2 = input(f'Hallo! Wie lautet der Name des 2.Spielers? : ')
+                spieler2 = Spieler(name2, "O")
+                print(f'Hallo {spieler2.name}! Dein Spielstein ist {spieler2.spielstein}')
+                beantwortet = True
+            else:
+                print('Bitte beantworte die Frage mit Y oder N !')
+
+        self.spielbrett.anzeigen()
+
+        while not Spiel.gewinn:
+            s1_spielzug = False
+            print(f'{spieler1.name} ist an der Reihe!')
+            while not s1_spielzug:
+                spalte = int(input(f'In welcher Spalte möchstest du deinen Spielstein setzten? : '))
+                if (spalte >= 1) and (spalte <= 7):
+                    spieler1.setze_spielstein(self.spielbrett, spalte)
+                    s1_spielzug = True
+                else:
+                    print('Du musst eine Spalte zwischen 1 und 7 angeben!')
+
+            self.spielbrett.anzeigen()
+            self.gewinn_abfragen()
+            if Spiel.gewinn and (Spiel.gewinner == 'X'):
+                print(f'Gratulation! {spieler1.name} hat gewonnen!')
+                break
+
+            if computer_gegner:
+                print('Der Computer ist an der Reihe!')
+                spalte_zufall = random.randint(1, 7)
+                computer.setze_spielstein(self.spielbrett, spalte_zufall)
+                self.spielbrett.anzeigen()
+                self.gewinn_abfragen()
+                if Spiel.gewinn and (Spiel.gewinner == 'O'):
+                    print(f'Der Computer hat gewonnen!')
+
+
+
+            if not computer_gegner:
+                print(f'{spieler2.name} ist an der Reihe!')
+                s2_spielzug = False
+                while not s2_spielzug:
+                    spalte = int(input(f'In welcher Spalte möchstest du deinen Spielstein setzten? : '))
+                    if (spalte >= 1) and (spalte <= 7):
+                        spieler2.setze_spielstein(self.spielbrett, spalte)
+                        s2_spielzug = True
+                    else:
+                        print('Du musst eine Spalte zwischen 1 und 7 angeben!')
+
+                self.spielbrett.anzeigen()
+                self.gewinn_abfragen()
+                if Spiel.gewinn and (Spiel.gewinner == 'O'):
+                    print(f'Gratulation! {spieler2.name} hat gewonnen!')
 
     def gewinn_abfragen(self):
-
-        gewinn = False
-
         # waagrecht
         for r in range(spielbrett.anzahl_reihen -1,-1,-1):
             for s in range(spielbrett.anzahl_spalten-3):
-                #if self.spielstein == "X":
-                while (not gewinn) and spielbrett.feld[r][s] == " X " and spielbrett.feld[r][s+1] == " X " and spielbrett.feld[r][s+2] == " X " and spielbrett.feld[r][s+3] == " X ":
-                    gewinn = True
-
-                while (not gewinn) and spielbrett.feld[r][s] == " O " and spielbrett.feld[r][s+1] == " O " and spielbrett.feld[r][s+2] == " O " and spielbrett.feld[r][s+3] == " O ":
-                    gewinn = True
+                while (not Spiel.gewinn) and spielbrett.feld[r][s] == " X " and spielbrett.feld[r][s+1] == " X " and spielbrett.feld[r][s+2] == " X " and spielbrett.feld[r][s+3] == " X ":
+                    Spiel.gewinn = True
+                    Spiel.gewinner = 'X'
+                while (not Spiel.gewinn) and spielbrett.feld[r][s] == " O " and spielbrett.feld[r][s+1] == " O " and spielbrett.feld[r][s+2] == " O " and spielbrett.feld[r][s+3] == " O ":
+                    Spiel.gewinn = True
+                    Spiel.gewinner = 'O'
 
         # senkrecht
         for s in range(spielbrett.anzahl_spalten):
             for r in range(spielbrett.anzahl_reihen -4,-1,-1):
-
-                while (not gewinn) and spielbrett.feld[r][s] == " X " and spielbrett.feld[r+1][s] == " X " and spielbrett.feld[r+2][s] == " X " and spielbrett.feld[r+3][s] == " X ":
-                    gewinn = True
-
-                while (not gewinn) and spielbrett.feld[r][s] == " O " and spielbrett.feld[r+1][s] == " O " and spielbrett.feld[r+2][s] == " O " and spielbrett.feld[r+3][s] == " O ":
-                    gewinn = True
+                while (not Spiel.gewinn) and spielbrett.feld[r][s] == " X " and spielbrett.feld[r+1][s] == " X " and spielbrett.feld[r+2][s] == " X " and spielbrett.feld[r+3][s] == " X ":
+                    Spiel.gewinn = True
+                    Spiel.gewinner = 'X'
+                while (not Spiel.gewinn) and spielbrett.feld[r][s] == " O " and spielbrett.feld[r+1][s] == " O " and spielbrett.feld[r+2][s] == " O " and spielbrett.feld[r+3][s] == " O ":
+                    Spiel.gewinn = True
+                    Spiel.gewinner = 'O'
 
         # diagonal
         for s in range(spielbrett.anzahl_spalten-3):
             for r in range(spielbrett.anzahl_reihen - 1, -1, -1):
                 # nach rechts
-                while (not gewinn) and spielbrett.feld[r][s] == " X " and spielbrett.feld[r-1][s+1] == " X " and spielbrett.feld[r-2][s+2] == " X " and spielbrett.feld[r-3][s+3] == " X ":
-                    gewinn = True
-
-                while (not gewinn) and spielbrett.feld[r][s] == " O " and spielbrett.feld[r-1][s+1] == " O " and spielbrett.feld[r-2][s+2] == " O " and spielbrett.feld[r-3][s+3] == " O ":
-                    gewinn = True
+                while (not Spiel.gewinn) and spielbrett.feld[r][s] == " X " and spielbrett.feld[r-1][s+1] == " X " and spielbrett.feld[r-2][s+2] == " X " and spielbrett.feld[r-3][s+3] == " X ":
+                    Spiel.gewinn = True
+                    Spiel.gewinner = 'X'
+                while (not Spiel.gewinn) and spielbrett.feld[r][s] == " O " and spielbrett.feld[r-1][s+1] == " O " and spielbrett.feld[r-2][s+2] == " O " and spielbrett.feld[r-3][s+3] == " O ":
+                    Spiel.gewinn = True
+                    Spiel.gewinner = 'O'
 
                 # nach links
-                while (not gewinn) and spielbrett.feld[r][s] == " X " and spielbrett.feld[r-1][s-1] == " X " and spielbrett.feld[r-2][s-2] == " X " and spielbrett.feld[r-3][s-3] == " X ":
-                    gewinn = True
+                while (not Spiel.gewinn) and spielbrett.feld[r][s] == " X " and spielbrett.feld[r-1][s-1] == " X " and spielbrett.feld[r-2][s-2] == " X " and spielbrett.feld[r-3][s-3] == " X ":
+                    Spiel.gewinn = True
+                    Spiel.gewinner = 'X'
+                while (not Spiel.gewinn) and spielbrett.feld[r][s] == " O " and spielbrett.feld[r-1][s-1] == " O " and spielbrett.feld[r-2][s-2] == " O " and spielbrett.feld[r-3][s-3] == " O ":
+                    Spiel.gewinn = True
+                    Spiel.gewinner = 'O'
 
-                while (not gewinn) and spielbrett.feld[r][s] == " O " and spielbrett.feld[r-1][s-1] == " O " and spielbrett.feld[r-2][s-2] == " O " and spielbrett.feld[r-3][s-3] == " O ":
-                    gewinn = True
-
-        if gewinn:
-            print("\n Spiel gewonnen!")
 
 
 
 if __name__ == '__main__':
     spielbrett = Spielbrett()
-    print(spielbrett)
-    spielbrett.anzeigen()
-
-    spieler1 = Spieler("Hansi", "X")
-    print(spieler1)
-    spieler2 = Spieler("Franz", "O")
-    print(spieler2)
-
-    # test für spielstein setzen
-    spieler1.setze_spielstein(spielbrett,2)
-    spielbrett.anzeigen()
-    spieler2.setze_spielstein(spielbrett, 2)
-    spielbrett.anzeigen()
+    spiel = Spiel(spielbrett)
+    spiel.starten()
 
