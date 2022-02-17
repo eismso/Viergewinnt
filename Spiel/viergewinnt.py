@@ -126,6 +126,7 @@ class Spiel:
             if Spiel.gewinn and (Spiel.gewinner == 'X'):
                 print(f'Gratulation! {spieler1.name} hat gewonnen!')
                 break
+            self.spielbrett_voll()
 
             if computer_gegner:
                 print('Der Computer ist an der Reihe!')
@@ -138,6 +139,8 @@ class Spiel:
                 self.gewinn_abfragen()
                 if Spiel.gewinn and (Spiel.gewinner == 'O'):
                     print(f'Der Computer hat gewonnen!')
+                    break
+                self.spielbrett_voll()
 
             if not computer_gegner:
                 print(f'{spieler2.name} ist an der Reihe!')
@@ -158,6 +161,8 @@ class Spiel:
                 self.gewinn_abfragen()
                 if Spiel.gewinn and (Spiel.gewinner == 'O'):
                     print(f'Gratulation! {spieler2.name} hat gewonnen!')
+                    break
+                self.spielbrett_voll()
 
 
 
@@ -224,6 +229,14 @@ class Spiel:
             else:
                 print('Bitte beantworte die Frage mit Y oder N !')
 
+    def spielbrett_voll(self):
+        zaehler = 0
+        for s in range(self.spielbrett.anzahl_spalten):
+            if spielbrett.feld[0][s] == leerer_eintrag:
+                zaehler += 1
+        if zaehler == 0:
+            print('Spielbrett ist voll besetzt, kein weiterer Zug mehr möglich!\nSpiel wird beendet')
+            Spiel.abbruch = True
 
 
 
