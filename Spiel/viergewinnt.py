@@ -48,17 +48,25 @@ class Spieler:
         Spieler.__spieler_zaehler += 1
         self.__spielernummer = Spieler.__spieler_zaehler
 
-    def setze_spielstein(self, spielbrett: Spielbrett, spalte: int):
+    def setze_spielstein(self, spielbrett: Spielbrett, spalte: int) -> bool:
         idx_spalte = spalte-1
+
+        if spielbrett.feld[0][idx_spalte] == " X " or spielbrett.feld[0][idx_spalte] == " O ":
+            print(f'Spalte {spalte} bereits voll!')
+            return False
+
         spielstein_gesetzt = False
         for r in range(spielbrett.anzahl_reihen -1,-1,-1):
             while (not spielstein_gesetzt) and (spielbrett.feld[r][idx_spalte] == leerer_eintrag):
                 if self.spielstein == "X":
                     spielbrett.feld[r][idx_spalte] = " X "
                     spielstein_gesetzt = True
+                    return True
                 elif self.spielstein == "O":
                     spielbrett.feld[r][idx_spalte] = " O "
                     spielstein_gesetzt = True
+                    return True
+
 
     def __repr__(self):
         return f'Spieler {self.__spielernummer}: Name = {self.name}, Spielstein = {self.spielstein}'
@@ -85,7 +93,7 @@ class Spiel:
                 beantwortet = True
                 computer_gegner = True
                 computer = Spieler("PC", "O")
-            elif computer_abfrage == "N" or computer_abfrage =="n":
+            elif computer_abfrage == "N" or computer_abfrage == "n":
                 name2 = input(f'Hallo! Wie lautet der Name des 2.Spielers? : ')
                 spieler2 = Spieler(name2, "O")
                 print(f'Hallo {spieler2.name}! Dein Spielstein ist {spieler2.spielstein}')
@@ -106,8 +114,8 @@ class Spiel:
             while not s1_spielzug:
                 spalte = int(input(f'In welcher Spalte möchstest du deinen Spielstein setzen? : '))
                 if (spalte >= 1) and (spalte <= 7):
-                    spieler1.setze_spielstein(self.spielbrett, spalte)
-                    s1_spielzug = True
+                    if spieler1.setze_spielstein(self.spielbrett, spalte):
+                        s1_spielzug = True
                 else:
                     print('Du musst eine Spalte zwischen 1 und 7 angeben!')
 
@@ -121,14 +129,15 @@ class Spiel:
 
             if computer_gegner:
                 print('Der Computer ist an der Reihe!')
-                spalte_zufall = random.randint(1, 7)
-                computer.setze_spielstein(self.spielbrett, spalte_zufall)
+                c_spielzug = False
+                while not c_spielzug:
+                    spalte_zufall = random.randint(1, 7)
+                    if computer.setze_spielstein(self.spielbrett, spalte_zufall):
+                        c_spielzug = True
                 self.spielbrett.anzeigen()
                 self.gewinn_abfragen()
                 if Spiel.gewinn and (Spiel.gewinner == 'O'):
                     print(f'Der Computer hat gewonnen!')
-
-
 
             if not computer_gegner:
                 print(f'{spieler2.name} ist an der Reihe!')
@@ -140,8 +149,8 @@ class Spiel:
                 while not s2_spielzug:
                     spalte = int(input(f'In welcher Spalte möchstest du deinen Spielstein setzen? : '))
                     if (spalte >= 1) and (spalte <= 7):
-                        spieler2.setze_spielstein(self.spielbrett, spalte)
-                        s2_spielzug = True
+                        if spieler2.setze_spielstein(self.spielbrett, spalte):
+                            s2_spielzug = True
                     else:
                         print('Du musst eine Spalte zwischen 1 und 7 angeben!')
 
@@ -179,9 +188,9 @@ class Spiel:
                     Spiel.abbruch = True
 
         # diagonal
+        # nach rechts
         for s in range(spielbrett.anzahl_spalten-3):
             for r in range(spielbrett.anzahl_reihen - 1, -1, -1):
-                # nach rechts
                 while (not Spiel.gewinn) and spielbrett.feld[r][s] == " X " and spielbrett.feld[r-1][s+1] == " X " and spielbrett.feld[r-2][s+2] == " X " and spielbrett.feld[r-3][s+3] == " X ":
                     Spiel.gewinn = True
                     Spiel.gewinner = 'X'
@@ -191,7 +200,9 @@ class Spiel:
                     Spiel.gewinner = 'O'
                     Spiel.abbruch = True
 
-                # nach links
+        # nach links
+        for s in range(spielbrett.anzahl_spalten - 4, spielbrett.anzahl_spalten):
+            for r in range(spielbrett.anzahl_reihen - 1, -1, -1):
                 while (not Spiel.gewinn) and spielbrett.feld[r][s] == " X " and spielbrett.feld[r-1][s-1] == " X " and spielbrett.feld[r-2][s-2] == " X " and spielbrett.feld[r-3][s-3] == " X ":
                     Spiel.gewinn = True
                     Spiel.gewinner = 'X'
@@ -220,4 +231,5 @@ if __name__ == '__main__':
     spielbrett = Spielbrett()
     spiel = Spiel(spielbrett)
     spiel.starten()
+
 
