@@ -73,12 +73,11 @@ class Spieler:
 
 class Spiel:
 
-    gewinn = False
-    gewinner = ''
-    abbruch = False
-
     def __init__(self, spielbrett: Spielbrett):
         self.spielbrett = spielbrett
+        self.gewinn = False
+        self.gewinner = ''
+        self.abbruch = False
 
     def starten(self):
         name = input(f'Hallo! Wie lautet dein Name? : ')
@@ -103,11 +102,11 @@ class Spiel:
 
         self.spielbrett.anzeigen()
 
-        while not Spiel.abbruch:
+        while not self.abbruch:
             s1_spielzug = False
             print(f'{spieler1.name} ist an der Reihe!')
             self.weiter_spielen()
-            if Spiel.abbruch:
+            if self.abbruch:
                 print('\nSpiel beendet')
                 break
 
@@ -123,7 +122,7 @@ class Spiel:
 
             self.spielbrett.anzeigen()
             self.gewinn_abfragen()
-            if Spiel.gewinn and (Spiel.gewinner == 'X'):
+            if self.gewinn and (self.gewinner == 'X'):
                 print(f'Gratulation! {spieler1.name} hat gewonnen!')
                 break
             self.spielbrett_voll()
@@ -137,7 +136,7 @@ class Spiel:
                         c_spielzug = True
                 self.spielbrett.anzeigen()
                 self.gewinn_abfragen()
-                if Spiel.gewinn and (Spiel.gewinner == 'O'):
+                if self.gewinn and (self.gewinner == 'O'):
                     print(f'Der Computer hat gewonnen!')
                     break
                 self.spielbrett_voll()
@@ -145,7 +144,7 @@ class Spiel:
             if not computer_gegner:
                 print(f'{spieler2.name} ist an der Reihe!')
                 self.weiter_spielen()
-                if Spiel.abbruch:
+                if self.abbruch:
                     print('\nSpiel beendet')
                     break
                 s2_spielzug = False
@@ -159,7 +158,7 @@ class Spiel:
 
                 self.spielbrett.anzeigen()
                 self.gewinn_abfragen()
-                if Spiel.gewinn and (Spiel.gewinner == 'O'):
+                if self.gewinn and (self.gewinner == 'O'):
                     print(f'Gratulation! {spieler2.name} hat gewonnen!')
                     break
                 self.spielbrett_voll()
@@ -169,53 +168,53 @@ class Spiel:
 
     def gewinn_abfragen(self):
         # waagrecht
-        for r in range(spielbrett.anzahl_reihen -1,-1,-1):
-            for s in range(spielbrett.anzahl_spalten-3):
-                while (not Spiel.gewinn) and spielbrett.feld[r][s] == " X " and spielbrett.feld[r][s+1] == " X " and spielbrett.feld[r][s+2] == " X " and spielbrett.feld[r][s+3] == " X ":
-                    Spiel.gewinn = True
-                    Spiel.gewinner = 'X'
-                    Spiel.abbruch = True
-                while (not Spiel.gewinn) and spielbrett.feld[r][s] == " O " and spielbrett.feld[r][s+1] == " O " and spielbrett.feld[r][s+2] == " O " and spielbrett.feld[r][s+3] == " O ":
-                    Spiel.gewinn = True
-                    Spiel.gewinner = 'O'
-                    Spiel.abbruch = True
+        for r in range(self.spielbrett.anzahl_reihen -1,-1,-1):
+            for s in range(self.spielbrett.anzahl_spalten-3):
+                while (not self.gewinn) and self.spielbrett.feld[r][s] == " X " and self.spielbrett.feld[r][s+1] == " X " and self.spielbrett.feld[r][s+2] == " X " and self.spielbrett.feld[r][s+3] == " X ":
+                    self.gewinn = True
+                    self.gewinner = 'X'
+                    self.abbruch = True
+                while (not self.gewinn) and self.spielbrett.feld[r][s] == " O " and self.spielbrett.feld[r][s+1] == " O " and self.spielbrett.feld[r][s+2] == " O " and self.spielbrett.feld[r][s+3] == " O ":
+                    self.gewinn = True
+                    self.gewinner = 'O'
+                    self.abbruch = True
 
         # senkrecht
-        for s in range(spielbrett.anzahl_spalten):
-            for r in range(spielbrett.anzahl_reihen -4,-1,-1):
-                while (not Spiel.gewinn) and spielbrett.feld[r][s] == " X " and spielbrett.feld[r+1][s] == " X " and spielbrett.feld[r+2][s] == " X " and spielbrett.feld[r+3][s] == " X ":
-                    Spiel.gewinn = True
-                    Spiel.gewinner = 'X'
-                    Spiel.abbruch = True
-                while (not Spiel.gewinn) and spielbrett.feld[r][s] == " O " and spielbrett.feld[r+1][s] == " O " and spielbrett.feld[r+2][s] == " O " and spielbrett.feld[r+3][s] == " O ":
-                    Spiel.gewinn = True
-                    Spiel.gewinner = 'O'
-                    Spiel.abbruch = True
+        for s in range(self.spielbrett.anzahl_spalten):
+            for r in range(self.spielbrett.anzahl_reihen -4,-1,-1):
+                while (not self.gewinn) and self.spielbrett.feld[r][s] == " X " and self.spielbrett.feld[r+1][s] == " X " and self.spielbrett.feld[r+2][s] == " X " and self.spielbrett.feld[r+3][s] == " X ":
+                    self.gewinn = True
+                    self.gewinner = 'X'
+                    self.abbruch = True
+                while (not self.gewinn) and self.spielbrett.feld[r][s] == " O " and self.spielbrett.feld[r+1][s] == " O " and self.spielbrett.feld[r+2][s] == " O " and self.spielbrett.feld[r+3][s] == " O ":
+                    self.gewinn = True
+                    self.gewinner = 'O'
+                    self.abbruch = True
 
         # diagonal
         # nach rechts
-        for s in range(spielbrett.anzahl_spalten-3):
-            for r in range(spielbrett.anzahl_reihen - 1, -1, -1):
-                while (not Spiel.gewinn) and spielbrett.feld[r][s] == " X " and spielbrett.feld[r-1][s+1] == " X " and spielbrett.feld[r-2][s+2] == " X " and spielbrett.feld[r-3][s+3] == " X ":
-                    Spiel.gewinn = True
-                    Spiel.gewinner = 'X'
-                    Spiel.abbruch = True
-                while (not Spiel.gewinn) and spielbrett.feld[r][s] == " O " and spielbrett.feld[r-1][s+1] == " O " and spielbrett.feld[r-2][s+2] == " O " and spielbrett.feld[r-3][s+3] == " O ":
-                    Spiel.gewinn = True
-                    Spiel.gewinner = 'O'
-                    Spiel.abbruch = True
+        for s in range(self.spielbrett.anzahl_spalten-3):
+            for r in range(self.spielbrett.anzahl_reihen - 1, -1, -1):
+                while (not self.gewinn) and self.spielbrett.feld[r][s] == " X " and self.spielbrett.feld[r-1][s+1] == " X " and self.spielbrett.feld[r-2][s+2] == " X " and self.spielbrett.feld[r-3][s+3] == " X ":
+                    self.gewinn = True
+                    self.gewinner = 'X'
+                    self.abbruch = True
+                while (not self.gewinn) and self.spielbrett.feld[r][s] == " O " and self.spielbrett.feld[r-1][s+1] == " O " and self.spielbrett.feld[r-2][s+2] == " O " and self.spielbrett.feld[r-3][s+3] == " O ":
+                    self.gewinn = True
+                    self.gewinner = 'O'
+                    self.abbruch = True
 
         # nach links
-        for s in range(spielbrett.anzahl_spalten - 4, spielbrett.anzahl_spalten):
-            for r in range(spielbrett.anzahl_reihen - 1, -1, -1):
-                while (not Spiel.gewinn) and spielbrett.feld[r][s] == " X " and spielbrett.feld[r-1][s-1] == " X " and spielbrett.feld[r-2][s-2] == " X " and spielbrett.feld[r-3][s-3] == " X ":
-                    Spiel.gewinn = True
-                    Spiel.gewinner = 'X'
-                    Spiel.abbruch = True
-                while (not Spiel.gewinn) and spielbrett.feld[r][s] == " O " and spielbrett.feld[r-1][s-1] == " O " and spielbrett.feld[r-2][s-2] == " O " and spielbrett.feld[r-3][s-3] == " O ":
-                    Spiel.gewinn = True
-                    Spiel.gewinner = 'O'
-                    Spiel.abbruch = True
+        for s in range(self.spielbrett.anzahl_spalten - 4, self.spielbrett.anzahl_spalten):
+            for r in range(self.spielbrett.anzahl_reihen - 1, -1, -1):
+                while (not self.gewinn) and self.spielbrett.feld[r][s] == " X " and self.spielbrett.feld[r-1][s-1] == " X " and self.spielbrett.feld[r-2][s-2] == " X " and self.spielbrett.feld[r-3][s-3] == " X ":
+                    self.gewinn = True
+                    self.gewinner = 'X'
+                    self.abbruch = True
+                while (not self.gewinn) and self.spielbrett.feld[r][s] == " O " and self.spielbrett.feld[r-1][s-1] == " O " and self.spielbrett.feld[r-2][s-2] == " O " and self.spielbrett.feld[r-3][s-3] == " O ":
+                    self.gewinn = True
+                    self.gewinner = 'O'
+                    self.abbruch = True
 
     def weiter_spielen(self):
         abfrage_beantwortet = False
@@ -224,7 +223,7 @@ class Spiel:
             if weiter_abfrage == "Y" or weiter_abfrage == "y":
                 abfrage_beantwortet = True
             elif weiter_abfrage == "N" or weiter_abfrage == "n":
-                Spiel.abbruch = True
+                self.abbruch = True
                 abfrage_beantwortet = True
             else:
                 print('Bitte beantworte die Frage mit Y oder N !')
@@ -236,7 +235,7 @@ class Spiel:
                 zaehler += 1
         if zaehler == 0:
             print('Spielbrett ist voll besetzt, kein weiterer Zug mehr möglich!\nSpiel wird beendet')
-            Spiel.abbruch = True
+            self.abbruch = True
 
 
 
