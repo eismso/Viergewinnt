@@ -18,3 +18,49 @@ Der Verwalter weiß wann er neue Erinnerungsstücke vom Urheber anfordern muss.
 
 Man kann Momentaufnahmen des Zustands eines Objekts erstellen, ohne eine Verkapselung zu verletzen
 Man kann den Code des Urhebers vereinfachen, indem man dem Verwalter die Verwaltung über Verlauf des Zustands überlässt.
+
+---
+## State Pattern
+---
+Das State Pattern gehört zu den Design Patterns, die sich mit dem Verhalten von Klassen beschäftigen. 
+>Durch Anwendung des State Patterns ändert ein Objekt sein Verhalten, je nachdem welchen Zustand ein Objekt hat.
+Es wird der Anschein erweckt, dass das Objekt seine Klasse verändert.
+
+### Problem
+---
+Zustandsabhängiges Verhalten wird generell mit vielen bedingten Anweisungen (*if-else* oder *switch*) implementiert. 
+Wenn mehr Zustände und zustandsabhängiges Verhalten hinzugefügt werden sollen, entstehen extra lange und komplexe bedingte Anweisungen, um das entsprechende Verhalten auswählen zu können.
+Außerdem führt jede Veränderung, die die Übergänge zw. den Zuständen betrifft, dazu, dass jede bedingte Anweisung jeder Methode diesbezüglich überprüft werden muss.
+
+### Lösung
+---
+**Das zustandsabhängige Verhalten wird abgekapselt**: 
+- für jeden Zustand wird eine eigene Klasse angelegt (***Konkrete Zustände***)
+- ein Interface (***State***) wird mit den zustandsabhängigen abstrakten Methoden angelegt
+- Klassen implementierten Interface 
+- die ***Kontext*** Klasse 
+    - beinhaltet eine Referenz auf eine Zustandsklasse, die den aktuellen Zustand definiert
+    - und delegiert das zuständige Verhalten an das aktuellen Zustandsobjekt
+- um den Zustand zu ändern, wird das aktuelle Zustandsobjekt mit einem Objekt des neuen Zustandes mithilfe des Interface ausgetauscht
+
+### Vorteile
+---
+```sh
+- ersetzt extra lange und komplexe bedingte Anweisungen
+- Flexibilität und Wiederverwendbarkeit
+- neue Zustände und Übergange können leicht hinzugefügt werden
+- dynamisches Verhalten
+```
+
+### Nachteile
+---
+```sh
+- zu aufwendig, 
+    wenn es nur wenige Zustände gibt 
+    oder diese sich selten verändern
+- erhöht die Anzahl an Klassen
+```
+
+### UML Diagramm
+---
+![State Pattern in UML](https://upload.wikimedia.org/wikipedia/commons/9/90/State_Design_Pattern_UML_Class_Diagram.png "State Pattern in UML")
