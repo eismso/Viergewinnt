@@ -8,7 +8,7 @@ Memento ist ein Entwurfsmuster, welches zur Sorte der Verhaltensmuster zählt. E
 
 Man verwendet das Memento-Verhaltensmuster wenn man beispielsweise eine Momentaufnahme des Zustands eines Objektes zwischenspeichern muss oder wenn verhindert werden soll, dass eine direkte Schnittstelle zur Ermittlung des Zustands Implementierungsdetails offenlegt
 
-Es besteht aus Originator, Memento und Verwatler, der Originator ist ein Objekt mit internem Zustand, der verändert werden kann. Im Memento wird dieser Zustand gespeichert und kann später wieder abgerufen werden. Der Verwalter weiß Herkunft und Datum des Zustandes und weiß auch wann der Zustand wiederhergestellt werden soll.
+Es besteht aus Originator, Memento und Verwalter, der Originator ist ein Objekt mit internem Zustand, der verändert werden kann. Im Memento wird dieser Zustand gespeichert und kann später wieder abgerufen werden. Der Verwalter weiß Herkunft und Datum des Zustandes und weiß auch wann der Zustand wiederhergestellt werden soll.
 
 
 
@@ -37,6 +37,7 @@ Man kann Momentaufnahmen des Zustands eines Objekts erstellen, ohne eine Verkaps
 Man kann den Code des Urhebers vereinfachen, indem man dem Verwalter die Verwaltung über Verlauf des Zustands überlässt.
 
 ```
+![Memento Pattern](https://upload.wikimedia.org/wikipedia/commons/3/38/W3sDesign_Memento_Design_Pattern_UML.jpg "Memento Pattern")
 ---
 ## State Pattern
 ---
@@ -94,7 +95,7 @@ Die Nutzer*innen möchten nun aber nicht nur mehr per E-Mail benachrichtigt werd
 zu Benachrichtigungen auf allen vier Kanälen. All diese potentiellen Benachrichtigungskombinationen rein über die 
 Implementierung von Subklassen abzubilden, würde den Rahmen jedes Codes sprengen:
 
-![](https://refactoring.guru/images/patterns/diagrams/decorator/problem3.png?id=f3b3e7a107d870871f2c)
+![Vererbungsexpolsion](https://refactoring.guru/images/patterns/diagrams/decorator/problem3.png?id=f3b3e7a107d870871f2c "Vererbungsexplosion")
 
 Bei der Vererbung stößt man hier an seine Grenzen, da diese für diesen Fall zu statisch ist. Außerdem können Subklassen 
 nur eine Elternklasse besitzen. Eine Klasse kann also nicht die Verhaltensweisen mehrerer Klassen erben.
