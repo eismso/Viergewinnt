@@ -302,7 +302,7 @@ class Spiel:
         """
         zaehler = 0
         for s in range(self.spielbrett.anzahl_spalten):
-            if spielbrett.feld[0][s] == leerer_eintrag:
+            if self.spielbrett.feld[0][s] == leerer_eintrag:
                 zaehler += 1
         if zaehler == 0:
             print('Spielbrett ist voll besetzt, kein weiterer Zug mehr möglich!\nSpiel wird beendet')
@@ -314,5 +314,3 @@ if __name__ == '__main__':
     spielbrett = Spielbrett()
     spiel = Spiel(spielbrett)
     spiel.starten()
-
-
