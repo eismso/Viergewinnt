@@ -1,0 +1,21 @@
+test package
+============
+
+Submodules
+----------
+
+test.viergewinnt\_test module
+-----------------------------
+
+.. automodule:: test.viergewinnt_test
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: test
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,508 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Spiel.viergewinnt &mdash; Viergewinnt 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Viergewinnt
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Viergewinnt-main</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Viergewinnt</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>Spiel.viergewinnt</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for Spiel.viergewinnt</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+<span class="n">leerer_eintrag</span> <span class="o">=</span> <span class="s2">&quot;   &quot;</span>
+
+<div class="viewcode-block" id="Spielbrett"><a class="viewcode-back" href="../../Spiel.html#Spiel.viergewinnt.Spielbrett">[docs]</a><span class="k">class</span> <span class="nc">Spielbrett</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Erzeugt Spielbrett und zeigt dieses an</span>
+
+<span class="sd">    Die Klasse Spielbrett erzeugt das Spielbrett mit sieben Spalten und sechs Reihen und zeigt dieses an.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">anzahl_reihen</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__anzahl_reihen</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">anzahl_spalten</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__anzahl_spalten</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feld</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__anzahl_reihen</span> <span class="o">=</span> <span class="mi">6</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__anzahl_spalten</span> <span class="o">=</span> <span class="mi">7</span>
+        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__anzahl_reihen</span><span class="p">):</span>
+            <span class="n">reihe</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__anzahl_spalten</span><span class="p">):</span>
+                <span class="n">reihe</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">leerer_eintrag</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">feld</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reihe</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;Spielbrett mit </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__anzahl_reihen</span><span class="si">}</span><span class="s1"> Reihen und </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__anzahl_spalten</span><span class="si">}</span><span class="s1"> Spalten&#39;</span>
+
+<div class="viewcode-block" id="Spielbrett.anzeigen"><a class="viewcode-back" href="../../Spiel.html#Spiel.viergewinnt.Spielbrett.anzeigen">[docs]</a>    <span class="k">def</span> <span class="nf">anzeigen</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Zeigt das aktuelle Spielbrett an</span>
+
+<span class="sd">        Die Funktion zeigt das aktuelle Spielbrett mit dazugehöriger Spaltennummerierung an</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Nichts</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1"> aktuelles Spielbrett: </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">feld</span><span class="p">)):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;|</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">|</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">|</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s1">|</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s1">|</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="mi">4</span><span class="p">]</span><span class="si">}</span><span class="s1">|</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="mi">5</span><span class="p">]</span><span class="si">}</span><span class="s1">|</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="mi">6</span><span class="p">]</span><span class="si">}</span><span class="s1">|&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-----------------------------&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;| 1 | 2 | 3 | 4 | 5 | 6 | 7 | </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="Spieler"><a class="viewcode-back" href="../../Spiel.html#Spiel.viergewinnt.Spieler">[docs]</a><span class="k">class</span> <span class="nc">Spieler</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Vergibt die Spielernummer und setzt den Spielstein</span>
+
+<span class="sd">    In der Klasse Spieler erhält jeder Spieler eine fortlaufende Nummer und der Spielstein wird gesetzt</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">__spieler_zaehler</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">spielernummer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__spielernummer</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">spielstein</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spielstein</span> <span class="o">=</span> <span class="n">spielstein</span>
+        <span class="n">Spieler</span><span class="o">.</span><span class="n">__spieler_zaehler</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__spielernummer</span> <span class="o">=</span> <span class="n">Spieler</span><span class="o">.</span><span class="n">__spieler_zaehler</span>
+
+<div class="viewcode-block" id="Spieler.setze_spielstein"><a class="viewcode-back" href="../../Spiel.html#Spiel.viergewinnt.Spieler.setze_spielstein">[docs]</a>    <span class="k">def</span> <span class="nf">setze_spielstein</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spielbrett</span><span class="p">:</span> <span class="n">Spielbrett</span><span class="p">,</span> <span class="n">spalte</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Setzt den Spielstein an die richtige Stelle</span>
+
+<span class="sd">        Diese Funktion setzt nach der Eingabe der Spaltennummer den Spielstein in die richtige Reihe des Spielbrettes.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        spielbrett: Spielbrett</span>
+<span class="sd">            Übergibt das Spielbrett aus der Klasse Spielbrett</span>
+<span class="sd">        spalte: int</span>
+<span class="sd">            Spaltennummer, in die der Stein gesetzt werden soll</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True, wenn der Spielstein gesetzt wurde</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">idx_spalte</span> <span class="o">=</span> <span class="n">spalte</span><span class="o">-</span><span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">spielbrett</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">idx_spalte</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot; X &quot;</span> <span class="ow">or</span> <span class="n">spielbrett</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">idx_spalte</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot; O &quot;</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Spalte </span><span class="si">{</span><span class="n">spalte</span><span class="si">}</span><span class="s1"> bereits voll!&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="n">spielstein_gesetzt</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">anzahl_reihen</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">while</span> <span class="p">(</span><span class="ow">not</span> <span class="n">spielstein_gesetzt</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">idx_spalte</span><span class="p">]</span> <span class="o">==</span> <span class="n">leerer_eintrag</span><span class="p">):</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">spielstein</span> <span class="o">==</span> <span class="s2">&quot;X&quot;</span><span class="p">:</span>
+                    <span class="n">spielbrett</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">idx_spalte</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot; X &quot;</span>
+                    <span class="n">spielstein_gesetzt</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">spielstein</span> <span class="o">==</span> <span class="s2">&quot;O&quot;</span><span class="p">:</span>
+                    <span class="n">spielbrett</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">idx_spalte</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot; O &quot;</span>
+                    <span class="n">spielstein_gesetzt</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;Spieler </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__spielernummer</span><span class="si">}</span><span class="s1">: Name = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">, Spielstein = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">spielstein</span><span class="si">}</span><span class="s1">&#39;</span></div>
+
+<div class="viewcode-block" id="Spiel"><a class="viewcode-back" href="../../Spiel.html#Spiel.viergewinnt.Spiel">[docs]</a><span class="k">class</span> <span class="nc">Spiel</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Steuert den Spielverlauf</span>
+
+<span class="sd">    In der Klasse Spiel wird das Spiel gestartet, die Spielernamen vergeben sowie bei Bedarf der Computergegner aktiviert.</span>
+<span class="sd">    Nach jedem Spielzug wird das aktuelle Spielbrett angezeigt, es erfolgt eine Gewinnabfrage und es besteht nach dem Spielzug die Möglichkeit das Spiel abzubrechen.</span>
+<span class="sd">    Ist das Spielfeld voll, wird das Spiel beendet.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spielbrett</span><span class="p">:</span> <span class="n">Spielbrett</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span> <span class="o">=</span> <span class="n">spielbrett</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gewinn</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gewinner</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">abbruch</span> <span class="o">=</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="Spiel.starten"><a class="viewcode-back" href="../../Spiel.html#Spiel.viergewinnt.Spiel.starten">[docs]</a>    <span class="k">def</span> <span class="nf">starten</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Starten des Spiels und Spielablauf</span>
+
+<span class="sd">        Per Tastatureingabe werden die Namen der Spieler erfragt bzw. abgefragt, ob gegen den Computer gespielt werden soll.</span>
+<span class="sd">        Solange das Spiel nicht abgebrochen wird, wird nach jedem Spielzug das aktuelle Spielbrett angezeigt und eine Gewinnabfrage durchgeführt</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Nichts</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Hallo! Wie lautet dein Name? : &#39;</span><span class="p">)</span>
+        <span class="n">spieler1</span> <span class="o">=</span> <span class="n">Spieler</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Hallo </span><span class="si">{</span><span class="n">spieler1</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">! Dein Spielstein ist </span><span class="si">{</span><span class="n">spieler1</span><span class="o">.</span><span class="n">spielstein</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="n">beantwortet</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">computer_gegner</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">beantwortet</span><span class="p">:</span>
+            <span class="n">computer_abfrage</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Möchtest du gegen den Computer spielen? Y/N:&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">computer_abfrage</span> <span class="o">==</span> <span class="s2">&quot;Y&quot;</span> <span class="ow">or</span> <span class="n">computer_abfrage</span> <span class="o">==</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span>
+                <span class="n">beantwortet</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">computer_gegner</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">computer</span> <span class="o">=</span> <span class="n">Spieler</span><span class="p">(</span><span class="s2">&quot;PC&quot;</span><span class="p">,</span> <span class="s2">&quot;O&quot;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">computer_abfrage</span> <span class="o">==</span> <span class="s2">&quot;N&quot;</span> <span class="ow">or</span> <span class="n">computer_abfrage</span> <span class="o">==</span> <span class="s2">&quot;n&quot;</span><span class="p">:</span>
+                <span class="n">name2</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Hallo! Wie lautet der Name des 2.Spielers? : &#39;</span><span class="p">)</span>
+                <span class="n">spieler2</span> <span class="o">=</span> <span class="n">Spieler</span><span class="p">(</span><span class="n">name2</span><span class="p">,</span> <span class="s2">&quot;O&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Hallo </span><span class="si">{</span><span class="n">spieler2</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">! Dein Spielstein ist </span><span class="si">{</span><span class="n">spieler2</span><span class="o">.</span><span class="n">spielstein</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">beantwortet</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Bitte beantworte die Frage mit Y oder N !&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">anzeigen</span><span class="p">()</span>
+
+        <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">abbruch</span><span class="p">:</span>
+            <span class="n">s1_spielzug</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">spieler1</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> ist an der Reihe!&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">weiter_spielen</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">abbruch</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Spiel beendet&#39;</span><span class="p">)</span>
+                <span class="k">break</span>
+
+            <span class="k">while</span> <span class="ow">not</span> <span class="n">s1_spielzug</span><span class="p">:</span>
+                <span class="n">spalte</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;In welcher Spalte möchstest du deinen Spielstein setzen? : &#39;</span><span class="p">))</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">spalte</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">spalte</span> <span class="o">&lt;=</span> <span class="mi">7</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">spieler1</span><span class="o">.</span><span class="n">setze_spielstein</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="p">,</span> <span class="n">spalte</span><span class="p">):</span>
+                        <span class="n">s1_spielzug</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Du musst eine Spalte zwischen 1 und 7 angeben!&#39;</span><span class="p">)</span>
+
+
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">anzeigen</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gewinn_abfragen</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">gewinn</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gewinner</span> <span class="o">==</span> <span class="s1">&#39;X&#39;</span><span class="p">):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Gratulation! </span><span class="si">{</span><span class="n">spieler1</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> hat gewonnen!&#39;</span><span class="p">)</span>
+                <span class="k">break</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">spielbrett_voll</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">computer_gegner</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Der Computer ist an der Reihe!&#39;</span><span class="p">)</span>
+                <span class="n">c_spielzug</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">while</span> <span class="ow">not</span> <span class="n">c_spielzug</span><span class="p">:</span>
+                    <span class="n">spalte_zufall</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">computer</span><span class="o">.</span><span class="n">setze_spielstein</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="p">,</span> <span class="n">spalte_zufall</span><span class="p">):</span>
+                        <span class="n">c_spielzug</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">anzeigen</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">gewinn_abfragen</span><span class="p">()</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">gewinn</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gewinner</span> <span class="o">==</span> <span class="s1">&#39;O&#39;</span><span class="p">):</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Der Computer hat gewonnen!&#39;</span><span class="p">)</span>
+                    <span class="k">break</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">spielbrett_voll</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">computer_gegner</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">spieler2</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> ist an der Reihe!&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">weiter_spielen</span><span class="p">()</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">abbruch</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Spiel beendet&#39;</span><span class="p">)</span>
+                    <span class="k">break</span>
+                <span class="n">s2_spielzug</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">while</span> <span class="ow">not</span> <span class="n">s2_spielzug</span><span class="p">:</span>
+                    <span class="n">spalte</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;In welcher Spalte möchstest du deinen Spielstein setzen? : &#39;</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">spalte</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">spalte</span> <span class="o">&lt;=</span> <span class="mi">7</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="n">spieler2</span><span class="o">.</span><span class="n">setze_spielstein</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="p">,</span> <span class="n">spalte</span><span class="p">):</span>
+                            <span class="n">s2_spielzug</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Du musst eine Spalte zwischen 1 und 7 angeben!&#39;</span><span class="p">)</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">anzeigen</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">gewinn_abfragen</span><span class="p">()</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">gewinn</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gewinner</span> <span class="o">==</span> <span class="s1">&#39;O&#39;</span><span class="p">):</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Gratulation! </span><span class="si">{</span><span class="n">spieler2</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> hat gewonnen!&#39;</span><span class="p">)</span>
+                    <span class="k">break</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">spielbrett_voll</span><span class="p">()</span></div>
+
+
+
+
+<div class="viewcode-block" id="Spiel.gewinn_abfragen"><a class="viewcode-back" href="../../Spiel.html#Spiel.viergewinnt.Spiel.gewinn_abfragen">[docs]</a>    <span class="k">def</span> <span class="nf">gewinn_abfragen</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Überprüft, ob ein Gewinn vorliegt</span>
+
+<span class="sd">        Ausgehend von der ersten Position am Spielbrett wird waagrecht, senkrecht und diagonal nach links bzw. diagonal nach rechts überprüft,</span>
+<span class="sd">        ob sich vier gleichfarbige Steine in einer Reihe finden. Ist das nicht der Fall, erfolgt die Gewinnabfrage – wie für eine for-Schleife üblich – für die nächste Position am Spielbrett.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Nichts</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># waagrecht</span>
+        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">anzahl_reihen</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">anzahl_spalten</span><span class="o">-</span><span class="mi">3</span><span class="p">):</span>
+                <span class="k">while</span> <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">gewinn</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">s</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot; X &quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">s</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot; X &quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">s</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot; X &quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">s</span><span class="o">+</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot; X &quot;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">gewinn</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">gewinner</span> <span class="o">=</span> <span class="s1">&#39;X&#39;</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">abbruch</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">while</span> <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">gewinn</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">s</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot; O &quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">s</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot; O &quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">s</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot; O &quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">s</span><span class="o">+</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot; O &quot;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">gewinn</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">gewinner</span> <span class="o">=</span> <span class="s1">&#39;O&#39;</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">abbruch</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="c1"># senkrecht</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">anzahl_spalten</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">anzahl_reihen</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                <span class="k">while</span> <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">gewinn</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">s</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot; X &quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="n">r</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="n">s</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot; X &quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="n">r</span><span class="o">+</span><span class="mi">2</span><span class="p">][</span><span class="n">s</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot; X &quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="n">r</span><span class="o">+</span><span class="mi">3</span><span class="p">][</span><span class="n">s</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot; X &quot;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">gewinn</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">gewinner</span> <span class="o">=</span> <span class="s1">&#39;X&#39;</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">abbruch</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">while</span> <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">gewinn</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">s</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot; O &quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="n">r</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="n">s</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot; O &quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="n">r</span><span class="o">+</span><span class="mi">2</span><span class="p">][</span><span class="n">s</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot; O &quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="n">r</span><span class="o">+</span><span class="mi">3</span><span class="p">][</span><span class="n">s</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot; O &quot;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">gewinn</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">gewinner</span> <span class="o">=</span> <span class="s1">&#39;O&#39;</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">abbruch</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="c1"># diagonal</span>
+        <span class="c1"># nach rechts</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">anzahl_spalten</span><span class="o">-</span><span class="mi">3</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">anzahl_reihen</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                <span class="k">while</span> <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">gewinn</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">s</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot; X &quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="n">r</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">s</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot; X &quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="n">r</span><span class="o">-</span><span class="mi">2</span><span class="p">][</span><span class="n">s</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot; X &quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="n">r</span><span class="o">-</span><span class="mi">3</span><span class="p">][</span><span class="n">s</span><span class="o">+</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot; X &quot;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">gewinn</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">gewinner</span> <span class="o">=</span> <span class="s1">&#39;X&#39;</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">abbruch</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">while</span> <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">gewinn</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">s</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot; O &quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="n">r</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">s</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot; O &quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="n">r</span><span class="o">-</span><span class="mi">2</span><span class="p">][</span><span class="n">s</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot; O &quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="n">r</span><span class="o">-</span><span class="mi">3</span><span class="p">][</span><span class="n">s</span><span class="o">+</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot; O &quot;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">gewinn</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">gewinner</span> <span class="o">=</span> <span class="s1">&#39;O&#39;</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">abbruch</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="c1"># nach links</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">anzahl_spalten</span> <span class="o">-</span> <span class="mi">4</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">anzahl_spalten</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">anzahl_reihen</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                <span class="k">while</span> <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">gewinn</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">s</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot; X &quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="n">r</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">s</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot; X &quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="n">r</span><span class="o">-</span><span class="mi">2</span><span class="p">][</span><span class="n">s</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot; X &quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="n">r</span><span class="o">-</span><span class="mi">3</span><span class="p">][</span><span class="n">s</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot; X &quot;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">gewinn</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">gewinner</span> <span class="o">=</span> <span class="s1">&#39;X&#39;</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">abbruch</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">while</span> <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">gewinn</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">s</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot; O &quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="n">r</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">s</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot; O &quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="n">r</span><span class="o">-</span><span class="mi">2</span><span class="p">][</span><span class="n">s</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot; O &quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="n">r</span><span class="o">-</span><span class="mi">3</span><span class="p">][</span><span class="n">s</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot; O &quot;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">gewinn</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">gewinner</span> <span class="o">=</span> <span class="s1">&#39;O&#39;</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">abbruch</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="Spiel.weiter_spielen"><a class="viewcode-back" href="../../Spiel.html#Spiel.viergewinnt.Spiel.weiter_spielen">[docs]</a>    <span class="k">def</span> <span class="nf">weiter_spielen</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Überprüft, ob das Spiel fortgesetzt werden soll</span>
+
+<span class="sd">        Mittels Tastatureingabe wird abgefragt, ob das Spiel an der jeweiligen Stelle fortgesetzt oder beendet werden soll.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Nichts</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">abfrage_beantwortet</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">abfrage_beantwortet</span><span class="p">:</span>
+            <span class="n">weiter_abfrage</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Möchtest du weiterspielen? Y/N:&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">weiter_abfrage</span> <span class="o">==</span> <span class="s2">&quot;Y&quot;</span> <span class="ow">or</span> <span class="n">weiter_abfrage</span> <span class="o">==</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span>
+                <span class="n">abfrage_beantwortet</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">elif</span> <span class="n">weiter_abfrage</span> <span class="o">==</span> <span class="s2">&quot;N&quot;</span> <span class="ow">or</span> <span class="n">weiter_abfrage</span> <span class="o">==</span> <span class="s2">&quot;n&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">abbruch</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">abfrage_beantwortet</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Bitte beantworte die Frage mit Y oder N !&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Spiel.spielbrett_voll"><a class="viewcode-back" href="../../Spiel.html#Spiel.viergewinnt.Spiel.spielbrett_voll">[docs]</a>    <span class="k">def</span> <span class="nf">spielbrett_voll</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Überprüft, ob das Spielbrett voll ist</span>
+
+<span class="sd">        Überprüft, ob das Spielbrett voll ist und keine Steine mehr gesetzt werden können. Wenn dem so ist, wird das Spiel beendet.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Nichts</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">zaehler</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spielbrett</span><span class="o">.</span><span class="n">anzahl_spalten</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">spielbrett</span><span class="o">.</span><span class="n">feld</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">s</span><span class="p">]</span> <span class="o">==</span> <span class="n">leerer_eintrag</span><span class="p">:</span>
+                <span class="n">zaehler</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">zaehler</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Spielbrett ist voll besetzt, kein weiterer Zug mehr möglich!</span><span class="se">\n</span><span class="s1">Spiel wird beendet&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">abbruch</span> <span class="o">=</span> <span class="kc">True</span></div></div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">spielbrett</span> <span class="o">=</span> <span class="n">Spielbrett</span><span class="p">()</span>
+    <span class="n">spiel</span> <span class="o">=</span> <span class="n">Spiel</span><span class="p">(</span><span class="n">spielbrett</span><span class="p">)</span>
+    <span class="n">spiel</span><span class="o">.</span><span class="n">starten</span><span class="p">()</span>
+
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2022, Rossmann, Eisner, Kogler
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
