@@ -193,12 +193,16 @@ class Spiel:
                 break
 
             while not s1_spielzug:
-                spalte = int(input(f'In welcher Spalte möchstest du deinen Spielstein setzen? : '))
-                if (spalte >= 1) and (spalte <= 7):
-                    if spieler1.setze_spielstein(self.spielbrett, spalte):
-                        s1_spielzug = True
+                spalte = input(f'In welcher Spalte möchstest du deinen Spielstein setzen? : ')
+                if spalte.isdigit():
+                    spalte = int(spalte)
+                    if (spalte >= 1) and (spalte <= 7):
+                        if spieler1.setze_spielstein(self.spielbrett, spalte):
+                            s1_spielzug = True
+                    else:
+                        print('Du musst eine Spalte zwischen 1 und 7 angeben!')
                 else:
-                    print('Du musst eine Spalte zwischen 1 und 7 angeben!')
+                    print('Bitte nur ganze Zahlen zw. 1 und 7 eingeben!')
 
 
 
@@ -231,12 +235,16 @@ class Spiel:
                     break
                 s2_spielzug = False
                 while not s2_spielzug:
-                    spalte = int(input(f'In welcher Spalte möchstest du deinen Spielstein setzen? : '))
-                    if (spalte >= 1) and (spalte <= 7):
-                        if spieler2.setze_spielstein(self.spielbrett, spalte):
-                            s2_spielzug = True
+                    spalte = input(f'In welcher Spalte möchstest du deinen Spielstein setzen? : ')
+                    if spalte.isdigit():
+                        spalte = int(spalte)
+                        if (spalte >= 1) and (spalte <= 7):
+                            if spieler2.setze_spielstein(self.spielbrett, spalte):
+                                s2_spielzug = True
+                        else:
+                            print('Du musst eine Spalte zwischen 1 und 7 angeben!')
                     else:
-                        print('Du musst eine Spalte zwischen 1 und 7 angeben!')
+                        print('Bitte nur ganze Zahlen zw. 1 und 7 eingeben!')
 
                 self.spielbrett.anzeigen()
                 self.gewinn_abfragen()
