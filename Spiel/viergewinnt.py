@@ -4,9 +4,18 @@ import random
 leerer_eintrag = "   "
 
 class Spielbrett:
-    """ Erzeugt Spielbrett und zeigt dieses an
+    """Erzeugt Spielbrett und zeigt dieses an.
 
-    Die Klasse Spielbrett erzeugt das Spielbrett mit sieben Spalten und sechs Reihen und zeigt dieses an.
+    Die Klasse Spielbrett erzeugt das Spielbrett als nested list mit sieben Spalten und sechs Reihen und zeigt dieses an.
+
+    Attributes
+    ----------
+    feld: list of list of str
+        Gitter des Spielbretts.
+    anzahl_reihen: int
+        Anzahl der Reihen des Spielbretts.
+    anzahl_spalten: int
+        Anzahl der Spalten des Spielbretts.
     """
     @property
     def anzahl_reihen(self):
@@ -31,13 +40,13 @@ class Spielbrett:
         return f'Spielbrett mit {self.__anzahl_reihen} Reihen und {self.__anzahl_spalten} Spalten'
 
     def anzeigen(self):
-        """ Zeigt das aktuelle Spielbrett an
+        """Zeigt das aktuelle Spielbrett an.
 
-        Die Funktion zeigt das aktuelle Spielbrett mit dazugehöriger Spaltennummerierung an
+        Die Funktion zeigt das aktuelle Spielbrett mit dazugehoeriger Spaltennummerierung an.
 
         Returns
         -------
-        Nichts
+        Nichts.
         """
         print('\n aktuelles Spielbrett: \n')
         for r in range(len(self.feld)):
@@ -46,9 +55,20 @@ class Spielbrett:
         print('| 1 | 2 | 3 | 4 | 5 | 6 | 7 | \n')
 
 class Spieler:
-    """ Vergibt die Spielernummer und setzt den Spielstein
+    """Vergibt die Spielernummer und setzt den Spielstein.
 
-    In der Klasse Spieler erhält jeder Spieler eine fortlaufende Nummer und der Spielstein wird gesetzt
+    In der Klasse Spieler erhaelt jeder Spieler eine fortlaufende Nummer und der Spielstein wird gesetzt.
+
+    Attributes
+    ----------
+    spieler_zaehler: int
+        Zaehler der erstellten Spieler.
+    name: str
+        Name des Spielers.
+    spielstein: str
+        Spielstein des Spielers.
+    spielernummer: int
+        Nummer des Spielers.
     """
 
     __spieler_zaehler = 0
@@ -64,21 +84,25 @@ class Spieler:
         self.__spielernummer = Spieler.__spieler_zaehler
 
     def setze_spielstein(self, spielbrett: Spielbrett, spalte: int) -> bool:
-        """ Setzt den Spielstein an die richtige Stelle
+        """Setzt den Spielstein an die richtige Stelle.
 
-        Diese Funktion setzt nach der Eingabe der Spaltennummer den Spielstein in die richtige Reihe des Spielbrettes.
+        Diese Funktion setzt nach der Eingabe der Spaltennummer den Spielstein in den unterst moeglichen Reihenplatz des Spielbrettes.
+        Ueberprueft wird außerdem, ob die Spalte bereits voll ist.
+        Wenn dem so ist, kann der Spielstein in dieser Spalte nicht gesetzt werden.
+        Nur der oberster Reihenplatz (index 0) der Spalte wird dafuer ueberprueft, weil dieser erst befuellt werden kann,
+        wenn die unteren Reihenplaetze schon besetzt sind.
 
         Parameters
         ----------
         spielbrett: Spielbrett
-            Übergibt das Spielbrett aus der Klasse Spielbrett
+            Uebergibt das Spielbrett aus der Klasse Spielbrett.
         spalte: int
-            Spaltennummer, in die der Stein gesetzt werden soll
+            Spaltennummer, in die der Stein gesetzt werden soll.
 
         Returns
         -------
         bool
-            True, wenn der Spielstein gesetzt wurde
+            True, wenn der Spielstein gesetzt wurde.
         """
         idx_spalte = spalte-1
 
@@ -103,11 +127,22 @@ class Spieler:
         return f'Spieler {self.__spielernummer}: Name = {self.name}, Spielstein = {self.spielstein}'
 
 class Spiel:
-    """ Steuert den Spielverlauf
+    """Steuert den Spielverlauf.
 
     In der Klasse Spiel wird das Spiel gestartet, die Spielernamen vergeben sowie bei Bedarf der Computergegner aktiviert.
-    Nach jedem Spielzug wird das aktuelle Spielbrett angezeigt, es erfolgt eine Gewinnabfrage und es besteht nach dem Spielzug die Möglichkeit das Spiel abzubrechen.
+    Nach jedem Spielzug wird das aktuelle Spielbrett angezeigt, es erfolgt eine Gewinnabfrage und es besteht nach dem Spielzug die Moeglichkeit das Spiel abzubrechen.
     Ist das Spielfeld voll, wird das Spiel beendet.
+
+    Attributes
+    ----------
+    spielbrett: Spielbrett
+        Uebergibt das Spielbrett aus der Klasse Spielbrett.
+    gewinn: bool
+        True, wenn Spiel gewonnen wurde.
+    gewinner: str
+        Spielstein des Gewinners.
+    abbruch: bool
+        True, wenn Spiel beendet ist.
     """
 
     def __init__(self, spielbrett: Spielbrett):
@@ -117,14 +152,15 @@ class Spiel:
         self.abbruch = False
 
     def starten(self):
-        """ Starten des Spiels und Spielablauf
+        """Starten des Spiels und Spielablauf.
 
         Per Tastatureingabe werden die Namen der Spieler erfragt bzw. abgefragt, ob gegen den Computer gespielt werden soll.
+        Ebenso wird durch Tastatureingabe die Spaltennummer abgefragt, in der der Spielstein eines Spielers gesetzt werden soll.
         Solange das Spiel nicht abgebrochen wird, wird nach jedem Spielzug das aktuelle Spielbrett angezeigt und eine Gewinnabfrage durchgeführt
 
         Returns
         -------
-        Nichts
+        Nichts.
         """
         name = input(f'Hallo! Wie lautet dein Name? : ')
         spieler1 = Spieler(name, "X")
@@ -213,14 +249,14 @@ class Spiel:
 
 
     def gewinn_abfragen(self):
-        """ Überprüft, ob ein Gewinn vorliegt
+        """Ueberprueft, ob ein Gewinn vorliegt.
 
-        Ausgehend von der ersten Position am Spielbrett wird waagrecht, senkrecht und diagonal nach links bzw. diagonal nach rechts überprüft,
-        ob sich vier gleichfarbige Steine in einer Reihe finden. Ist das nicht der Fall, erfolgt die Gewinnabfrage – wie für eine for-Schleife üblich – für die nächste Position am Spielbrett.
+        Ausgehend von der ersten Position am Spielbrett wird waagrecht, senkrecht und diagonal nach links bzw. diagonal nach rechts ueberprueft,
+        ob sich vier gleiche Spielsteine in einer Reihe befinden. Ist das nicht der Fall, erfolgt die Gewinnabfrage – wie für eine for-Schleife ueblich – fuer die naechste Position am Spielbrett.
 
         Returns
         -------
-        Nichts
+        Nichts.
         """
         # waagrecht
         for r in range(self.spielbrett.anzahl_reihen -1,-1,-1):
@@ -272,13 +308,13 @@ class Spiel:
                     self.abbruch = True
 
     def weiter_spielen(self):
-        """ Überprüft, ob das Spiel fortgesetzt werden soll
+        """Ueberprueft, ob das Spiel fortgesetzt werden soll.
 
         Mittels Tastatureingabe wird abgefragt, ob das Spiel an der jeweiligen Stelle fortgesetzt oder beendet werden soll.
 
         Returns
         -------
-        Nichts
+        Nichts.
         """
         abfrage_beantwortet = False
         while not abfrage_beantwortet:
@@ -292,13 +328,15 @@ class Spiel:
                 print('Bitte beantworte die Frage mit Y oder N !')
 
     def spielbrett_voll(self):
-        """ Überprüft, ob das Spielbrett voll ist
+        """Ueberprueft, ob das Spielbrett voll ist.
 
-        Überprüft, ob das Spielbrett voll ist und keine Steine mehr gesetzt werden können. Wenn dem so ist, wird das Spiel beendet.
+        Ueberprueft, ob das Spielbrett voll ist und keine Steine mehr gesetzt werden koennen. Wenn dem so ist, wird das Spiel beendet.
+        Nur die oberste Reihe (index 0) des Spielbretts wird dafuer ueberprueft, weil diese erst befuellt werden kann,
+        wenn die unteren Reihenplaetze schon besetzt sind.
 
         Returns
         -------
-        Nichts
+        Nichts.
         """
         zaehler = 0
         for s in range(self.spielbrett.anzahl_spalten):
